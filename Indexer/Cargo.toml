@@ -4,6 +4,12 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+human_regex = "0.3.0"
 lol_html = "2.5.0"
 reqwest = { version = "0.12", features = ["json"] }
+stop-words = {version = "0.8.1",features = ["nltk","iso"]}
+tokenizers ={version= "0.21.2", features = ["http"]}
 tokio = { version = "1", features = ["full"] }
+[profile.release]
+debug = 1
+
