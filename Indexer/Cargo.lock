@@ -9,6 +9,8 @@ dependencies = [
  "human_regex",
  "lol_html",
  "reqwest",
+ "serde",
+ "serde_json",
  "stop-words",
  "tokenizers",
  "tokio",
