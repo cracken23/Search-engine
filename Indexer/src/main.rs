@@ -174,7 +174,7 @@ async fn process(url:& str) ->Result<Store> {
 
 #[tokio::main]
 async fn main()->Result<()> {
-    let urls=["https://doc.rust-lang.org/rust-by-example/error/multiple_error_types/define_error_type.html","https://courses.cs.washington.edu/courses/cse390c/24wi/lectures/moby.txt"];
+    let urls=["https://doc.rust-lang.org/rust-by-example/error/multiple_error_types/define_error_type.html","https://courses.cs.washington.edu/courses/cse390c/24wi/lectures/moby.txt","https://www.popsci.com/technology/ai-math-competition/?utm_source=firefox-newtab-en-intl"];
     let mut stores:Vec<Store>=Vec::new();
     for url in urls{
         stores.push(process(url).await?);
@@ -188,9 +188,14 @@ async fn main()->Result<()> {
     }
     let mut idf:HashMap<&str,f32>=HashMap::new();
     let doc_num=urls.len() as f32 +1.0;
+    let mut mn=f32::MAX;
+    let mut mx=f32::MIN;
     for (&word,count) in global_count.iter(){
-        idf.entry(word).or_insert(doc_num.log(*count as f32 +1.0)+1.0);
+        idf.entry(word).or_insert(f32::log10(doc_num/(*count as f32 +1.0))+1.0);
+        mn=mn.min(f32::log10(doc_num/(*count as f32 +1.0))+1.0);
+        mx=mx.max(f32::log10(doc_num/(*count as f32 +1.0))+1.0);
     }
+    println!("max:{},min:{}",mx,mn);
     let jsn=serde_json::to_string(&idf).unwrap();
 
     let path=Path::new("./out.json");
